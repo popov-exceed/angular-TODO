@@ -1,0 +1,5 @@
+<li>
+  <input type="checkbox" (change)="toggle()" [checked]="task.completed">
+  <span>{{task.title}}</span>
+  <button (click)="remove()"><img src="../../assets/delete.svg" alt="delete"></button>
+</li>
