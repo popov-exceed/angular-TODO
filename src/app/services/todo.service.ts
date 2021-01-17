@@ -13,26 +13,23 @@ type TodosOperation = (tasks: Task[]) => Task[];
 })
 export class TodoService {
 
-    todos$: Observable<Task[]>;
-    
+    tasks$: Observable<Task[]>;
+
     update$: BehaviorSubject<TodosOperation> = new BehaviorSubject<TodosOperation>((tasks: Task[]) => tasks);
 
-    createTodo$: Subject<Task> = new Subject<Task>();
-    removeTodo$: Subject<string> = new Subject<string>();
-    toggleTodo$: Subject<string> = new Subject<string>();
 
-    create$: Subject<Task> = new Subject<Task>();
+    create$: Subject<string> = new Subject<string>();
     remove$: Subject<string> = new Subject<string>();
     toggle$: Subject<string> = new Subject<string>();
 
 
     constructor() {
 
-        this.todos$ = this.update$.pipe(scan((tasks: Task[], operation: TodosOperation) => operation(tasks), initialTodos))
-        this.todos$.forEach(tasks => localStorage.setItem('todo', JSON.stringify(tasks)));
+        this.tasks$ = this.update$.pipe(scan((tasks: Task[], operation: TodosOperation) => operation(tasks), initialTodos));
+        this.tasks$.forEach(tasks => localStorage.setItem('todo', JSON.stringify(tasks)));
 
-        this.create$.pipe(map((task: Task): TodosOperation => {
-            return (tasks: Task[]) => tasks.concat(task);
+        this.create$.pipe(map((title: string): TodosOperation => {
+            return (tasks: Task[]) => tasks.concat({title, completed: false,id: uuidv4()});
           }))
         .subscribe(this.update$);
 
@@ -49,27 +46,18 @@ export class TodoService {
         .subscribe(this.update$);
         
        
-        this.toggleTodo$
-        .subscribe(this.toggle$);
-
-        this.createTodo$
-        .subscribe(this.create$);
-
-        this.removeTodo$
-        .subscribe(this.remove$);
+    
     }
     addTask(title: string): void {
-       
-        
-        this.createTodo$.next({title, completed: false,id: uuidv4()});
+        this.create$.next(title);
     }
 
     removeTask(id: string): void {
-        this.removeTodo$.next(id);
+        this.remove$.next(id);
     }
 
     toggleTask(id: string): void {
-        this.toggleTodo$.next(id);
-      }
+        this.toggle$.next(id);
+    }
    
 }
