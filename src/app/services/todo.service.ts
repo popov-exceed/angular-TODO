@@ -18,4 +18,9 @@ export class TodoService {
         this.tasks.next(items);
 
     }
+
+    removeTask(id: string) {
+        const items = this.tasks.value;
+        this.tasks.next(items.filter((task) => task.id !== id));
+    }
 }
