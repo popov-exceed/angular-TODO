@@ -14,6 +14,7 @@ type TodosOperation = (tasks: Task[]) => Task[];
 export class TodoService {
 
     todos$: Observable<Task[]>;
+    
     update$: BehaviorSubject<TodosOperation> = new BehaviorSubject<TodosOperation>((tasks: Task[]) => tasks);
 
     createTodo$: Subject<Task> = new Subject<Task>();
@@ -48,7 +49,9 @@ export class TodoService {
         .subscribe(this.update$);
         
        
-        
+        this.toggleTodo$
+        .subscribe(this.toggle$);
+
         this.createTodo$
         .subscribe(this.create$);
 
@@ -65,7 +68,7 @@ export class TodoService {
         this.removeTodo$.next(id);
     }
 
-    toggle(id: string): void {
+    toggleTask(id: string): void {
         this.toggleTodo$.next(id);
       }
    
