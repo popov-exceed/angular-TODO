@@ -1,0 +1,3 @@
+<ul>
+  <app-task *ngFor="let task of tasks" [task]="task" (handleRemove)="removeTask($event)" (handleToggle)="toggleTask($event)"></app-task>
+</ul>
