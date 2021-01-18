@@ -1,5 +1,5 @@
 <li>
-  <input type="checkbox" (change)="toggle()" [checked]="task.completed">
+  <mat-checkbox [checked]="task.completed"  (change)="toggle()"></mat-checkbox>
   <span>{{task.title}}</span>
-  <button (click)="remove()"><img src="../../assets/delete.svg" alt="delete"></button>
+  <button (click)="remove()"><mat-icon>delete</mat-icon></button>
 </li>

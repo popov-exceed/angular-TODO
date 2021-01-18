@@ -8,6 +8,9 @@ import { ListTasksComponent } from './list-tasks/list-tasks.component';
 import {TaskComponent} from "./task/task.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TaskFormComponent } from './task-form/task-form.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule, MatIconModule, MatInputModule} from '@angular/material';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,13 @@ import { TaskFormComponent } from './task-form/task-form.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NoopAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Task} from "../models/task";
 import { BehaviorSubject,Observable, Subject } from 'rxjs';
-import { map, scan } from 'rxjs/operators';
+import { map, scan, refCount,publishReplay } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialTodos: Task[] = JSON.parse(localStorage.getItem('todo')) || [];
@@ -23,9 +23,11 @@ export class TodoService {
     toggle$: Subject<string> = new Subject<string>();
 
 
-    constructor() {
 
-        this.tasks$ = this.update$.pipe(scan((tasks: Task[], operation: TodosOperation) => operation(tasks), initialTodos));
+    constructor() {
+      
+        this.tasks$ = this.update$.pipe(scan((tasks: Task[], operation: TodosOperation) => operation(tasks), initialTodos),publishReplay(1)
+          ,refCount());
         this.tasks$.forEach(tasks => localStorage.setItem('todo', JSON.stringify(tasks)));
 
         this.create$.pipe(map((title: string): TodosOperation => {
@@ -44,9 +46,9 @@ export class TodoService {
             };
           }))
         .subscribe(this.update$);
-        
-       
-    
+
+
+
     }
     addTask(title: string): void {
         this.create$.next(title);
@@ -59,5 +61,5 @@ export class TodoService {
     toggleTask(id: string): void {
         this.toggle$.next(id);
     }
-   
+
 }
